@@ -1,5 +1,10 @@
 <?php namespace App\Http\Controllers;
 
+use App\Article;
+use App\Blog;
+use App\Category;
+use App\Item;
+
 class WelcomeController extends Controller {
 
 	/*
@@ -30,7 +35,29 @@ class WelcomeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('welcome');
+		$blogs = Blog::all();
+
+		$articles = Article::all();
+
+		$catalogs = Category::furniture()->get();
+
+		$top_sales = Item::take(6)->get();
+
+		$last_work = Item::take(1)->get();
+
+		$news = Article::news()->take(2)->get();
+
+		$sales = Article::where('blog_id','=',2)->take(2)->get();
+
+		return view('_layouts.front-page')->with([
+			'blogs' => $blogs,
+			'articles' => $articles,
+			'catalogs' => $catalogs,
+			'top-sales' => $top_sales,
+			'last-work' => $last_work,
+			'news' => $news,
+			'sales' => $sales,
+		]);
 	}
 
 }
